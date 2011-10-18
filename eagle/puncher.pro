@@ -1,25 +1,25 @@
 EAGLE AutoRouter Statistics:
 
-Job           : /home/raphael/eeprojects/EAGLE_PROJECTS/puncher/puncher.brd
+Job           : /home/raphael/eeprojects/freelance_puncher/eagle/puncher.brd
 
-Start at      : 14:04:58 (9/26/11)
-End at        : 14:07:27 (9/26/11)
-Elapsed time  : 00:02:29
+Start at      : 15:21:12 (10/18/11)
+End at        : 15:21:17 (10/18/11)
+Elapsed time  : 00:00:05
 
-Signals       :    30   RoutingGrid: 1 mil  Layers: 2
-Connections   :    75   predefined:  0 ( 0 Vias )
+Signals       :    28   RoutingGrid: 1 mil  Layers: 2
+Connections   :    77   predefined:  76 ( 35 Vias )
 
-Router memory :   10940656
+Router memory :   9329616
 
 Passname          :     Route Optimize1 Optimize2 Optimize3 Optimize4
 
-Time per pass     :  00:00:41  00:00:23  00:00:27  00:00:27  00:00:31
-Number of Ripups  :        15         0         0         0         0
-max. Level        :         1         0         0         0         0
-max. Total        :         4         0         0         0         0
+Time per pass     :  00:00:00  00:00:01  00:00:02  00:00:01  00:00:01
+Number of Ripups  :         0         0         0         0         0
+max. Level        :         0         0         0         0         0
+max. Total        :         0         0         0         0         0
 
-Routed            :        75        75        75        75        75
-Vias              :        56        48        47        47        47
+Routed            :         1         1         1         1         1
+Vias              :         1         1         1         1         1
 Resolution        :   100.0 %   100.0 %   100.0 %   100.0 %   100.0 %
 
 Final             : 100.0% finished
