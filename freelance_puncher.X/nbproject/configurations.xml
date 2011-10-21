@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="62">
+  <logicalFolder name="root" displayName="root" projectFiles="true">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="LibraryFiles"
+                   displayName="Library Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="ObjectFiles"
+                   displayName="Object Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>puncher.c</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="default" type="2">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <targetDevice>PIC16LF1827</targetDevice>
+        <targetHeader></targetHeader>
+        <platformTool>PICkit3PlatformTool</platformTool>
+        <languageToolchain>hi-tech-picc</languageToolchain>
+        <languageToolchainVersion>9.82</languageToolchainVersion>
+        <platform>3</platform>
+      </toolsSet>
+      <compileType>
+        <linkerTool>
+          <linkerLibItems>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+      <HI-TECH-COMP>
+        <property key="extra-include-directories" value=""/>
+        <property key="what-to-do" value="ignore"/>
+        <property key="define-macros" value=""/>
+        <property key="optimization-assembler-files" value="false"/>
+        <property key="warning-level" value="9"/>
+        <property key="verbose" value="false"/>
+        <property key="optimization-level" value="-9"/>
+        <property key="optimization-debug" value="false"/>
+        <property key="preprocess-assembler" value="false"/>
+        <property key="optimization-global" value="true"/>
+        <property key="identifier-length" value="31"/>
+        <property key="optimization-set" value="default"/>
+        <property key="undefine-macros" value=""/>
+        <property key="optimization-speed" value="true"/>
+        <property key="optimization-assembler" value="true"/>
+        <property key="operation-mode" value="pro"/>
+      </HI-TECH-COMP>
+      <HI-TECH-LINK>
+        <property key="additional-options-code-offset" value=""/>
+        <property key="initialize-cp0" value="false"/>
+        <property key="create-html-files" value="false"/>
+        <property key="initialize-heap" value="false"/>
+        <property key="format-hex-file-for-download" value="false"/>
+        <property key="additional-options-checksum" value=""/>
+        <property key="data-model-size-of-double" value="24"/>
+        <property key="clear-bss" value="true"/>
+        <property key="code-model-rom" value=""/>
+        <property key="keep-generated-startup.as" value="false"/>
+        <property key="additional-options-command-line" value=""/>
+        <property key="warn-on-stack-overflow" value="true"/>
+        <property key="display-psect-usage" value="false"/>
+        <property key="program-the-device-with-default-config-words" value="false"/>
+        <property key="additional-options-extend-address" value="false"/>
+        <property key="calibrate-oscillator" value="true"/>
+        <property key="optimal-performance" value="false"/>
+        <property key="link-in-c-library" value="true"/>
+        <property key="additional-options-errata" value=""/>
+        <property key="additional-options-trace-type" value=""/>
+        <property key="test-ram-on-startup" value="true"/>
+        <property key="fill-flash-options-const" value=""/>
+        <property key="calibrate-oscillator-value" value=""/>
+        <property key="data-model-size-of-float" value="24"/>
+        <property key="unused-interrupt-vectors" value="-vec_reset,-vec_func"/>
+        <property key="data-model-ram" value=""/>
+        <property key="nmi-handler" value="false"/>
+        <property key="backup-reset-condition-flags" value="false"/>
+        <property key="data-model-strict" value="false"/>
+        <property key="managed-stack" value="true"/>
+        <property key="link-in-peripheral-library" value="false"/>
+        <property key="display-class-usage" value="false"/>
+        <property key="initialize-stack" value="false"/>
+        <property key="code-model-pointer-size" value="16"/>
+        <property key="additional-options-callgraph" value="std"/>
+        <property key="display-overall-usage" value="true"/>
+        <property key="fill-flash-options-addr" value=""/>
+        <property key="linker-interrupts-table-location" value="pfm"/>
+        <property key="code-model-instruction-set" value="mips32r2"/>
+        <property key="soft-reset-handler" value="false"/>
+        <property key="code-model-external" value="wordwrite"/>
+        <property key="initialize-gprs" value="false"/>
+        <property key="linker-interrupts-vector-type" value="ram"/>
+        <property key="fill-flash-options-increment" value=""/>
+        <property key="initialize-data" value="true"/>
+        <property key="data-model-memory" value="large"/>
+        <property key="fill-flash-options-inc-const" value=""/>
+        <property key="display-hex-usage" value="false"/>
+        <property key="fill-flash-options-enable" value="0"/>
+        <property key="checksum-verification" value="false"/>
+        <property key="linker-interrupts-disable-usage" value="false"/>
+        <property key="linker-interrupts-number-of-vectors" value="single"/>
+      </HI-TECH-LINK>
+      <PICkit3PlatformTool>
+        <property key="programoptions.preserveprogramrange.end" value="0x7"/>
+        <property key="memories.id" value="false"/>
+        <property key="Freeze Peripherals" value="true"/>
+        <property key="programoptions.preserveeeprom" value="false"/>
+        <property key="programmertogo.imagename" value=""/>
+        <property key="memories.programmemory" value="true"/>
+        <property key="SecureSegment.SegmentProgramming" value="FullChipProgramming"/>
+        <property key="AutoSelectMemRanges" value="auto"/>
+        <property key="hwtoolclock.frcindebug" value="false"/>
+        <property key="programoptions.usehighvoltageonmclr" value="false"/>
+        <property key="memories.eeprom" value="false"/>
+        <property key="ToolFirmwareFilePath"
+                  value="Press to browse for a specific firmware version"/>
+        <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
+        <property key="programoptions.preserveprogramrange.start" value="0x0"/>
+        <property key="voltagevalue" value="3.25"/>
+        <property key="programoptions.preserveprogramrange" value="false"/>
+        <property key="programoptions.eraseb4program" value="true"/>
+        <property key="memories.programmemory.start" value="0x0"/>
+        <property key="memories.programmemory.end" value="0xfff"/>
+        <property key="poweroptions.powerenable" value="true"/>
+      </PICkit3PlatformTool>
+    </conf>
+  </confs>
+</configurationDescriptor>
