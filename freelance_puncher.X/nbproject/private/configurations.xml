@@ -4,8 +4,8 @@
   <defaultConf>0</defaultConf>
   <confs>
     <conf name="default" type="2">
-      <platformToolSN></platformToolSN>
-      <languageToolchainDir>C:\Program Files\HI-TECH Software\PICC\9.82\bin</languageToolchainDir>
+      <platformToolSN>:=MPLABCommUSB:=04D8:=900A:=0002:=Microchip Technology Inc.:=PICkit 3:=BUR101262978:=x:=en</platformToolSN>
+      <languageToolchainDir>/usr/hitech/picc/9.83/bin</languageToolchainDir>
       <mdbdebugger version="1">
         <placeholder1>place holder 1</placeholder1>
         <placeholder2>place holder 2</placeholder2>
