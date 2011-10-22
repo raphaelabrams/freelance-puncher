@@ -17,11 +17,12 @@
 // Set start time here
 #define START_C 0
 #define START_H 0
+#define START_Q 0
 #define START_M 0
-#define START_S 55
+#define START_S 0
 
 void init(void);
-void display(char left, char right, char stack);
+void display(char left, char right, char pile);
 
 //call the following twice (with different args each time) and the compiler automatically sets each config register
 __CONFIG(FOSC_LP & WDTE_OFF & PWRTE_ON & MCLRE_ON & CP_OFF & CPD_OFF & BOREN_ON & FCMEN_OFF);
@@ -34,7 +35,11 @@ near unsigned char centons; //hee hee 100 hours!
 near unsigned char hours;
 near unsigned char minutes;
 near unsigned char seconds;
-near unsigned char ticks;
+near unsigned char quarters;
+near unsigned char leftbuffer;
+near unsigned char rightbuffer;
+near unsigned char pilebuffer;
+near unsigned char displayenable=5;
 
 const unsigned char led[] = {
     0b11111100,
@@ -52,7 +57,7 @@ const unsigned char led[] = {
 const unsigned char common[] ={1,2,4};
 
 
-void display(char left, char right, char stack){
+void display(char left, char right, char pile){
             LATB = ~led[left];
             LATA = common[2];
             LATA = 0;
@@ -61,18 +66,18 @@ void display(char left, char right, char stack){
             LATA = common[1];
             LATA = 0;
 
-            LATB = stack;
+            LATB = pile;
             LATA = common[0];
             LATA = 0;
 }
 
 void main(void){
     init();
-    newSecond = tickCounter = 0;
     seconds=eeprom_read(0);
     minutes=eeprom_read(1);
-    hours=eeprom_read(2);
-    centons=eeprom_read(3);
+    quarters=eeprom_read(2);
+    hours=eeprom_read(3);
+    centons=eeprom_read(4);
 
     // Initialise the current time
 
@@ -82,63 +87,34 @@ void main(void){
 
     while(1){
 
-            LATB = ~led[seconds/10];  //left
-            LATA = common[2];
-            LATA = common[2];
-            LATA = common[2];
+        if(displayenable){
+            LATB = leftbuffer;  //left
+            LATA = 4;
+            LATA = 4;
             LATA = 0;
 
-            LATB = ~led[seconds%10];   //right
-            LATA = common[1];
-            LATA = common[1];
-            LATA = common[1];
+            LATB = rightbuffer;   //right
+            LATA = 2;
+            LATA = 2;
             LATA = 0;
 
-            LATB = ~seconds;     //stack
-            LATA = common[0];
-            LATA = common[0];
-            LATA = common[0];
+            LATB = pilebuffer;     //pile
+            LATA = 1;
+            LATA = 1;
             LATA = 0;
-//        display(seconds/10,seconds%10,~seconds);
+        }
+            //        display(seconds/10,seconds%10,~seconds);
         if(RA4==0){
             PIE1	= 0b00000000;
 
-            LATA=0b00000110;
-            LATB=0b11111110;
             eeprom_write(0, seconds);
             eeprom_write(1, minutes);
-            eeprom_write(2, hours);
-            eeprom_write(3, centons);
+            eeprom_write(2, quarters);
+            eeprom_write(3, hours);
+            eeprom_write(4, centons);
+            LATA=0b00000110;
+            LATB=0b11111101;
             while(RA4==0){;}
-        }
-        if(RA3==0){
-            centons=START_C;
-            hours = START_H;
-            minutes = START_M;
-            seconds = START_S;
-        }
-
-        if(newSecond){
-            // A second has accumulated, count it
-            newSecond=0;
-            if(++seconds > 59){
-                seconds=0;
-                minutes++;
-//                LATA = common[minutes%3];
-                if(++minutes > 59){
-                    minutes = 0;
-                    hours++;
-                    eeprom_write(0, seconds);
-                    eeprom_write(1, minutes);
-                    eeprom_write(2, hours);
-                    eeprom_write(3, centons);
-
-                    if(hours>99){
-                        centons++;
-                        hours=0;
-                    }
-                }
-            }
         }
     }
 }
@@ -146,13 +122,43 @@ void main(void){
 void interrupt isr(void){
 		/***** Timer 2 Code *****/
 //	if((TMR2IE)&&(TMR2IF)){
-		// Interrupt period is 40 mSec, 25 interrupts = 1 Sec
-//                ticks++;
-//                if(ticks==32){newSecond++;ticks=0;}	// Notify a second has accumulated
-                    newSecond++;
-  //              display(seconds%10,seconds%10,seconds);
+        seconds++;
+        if(RA3==0){
+            centons=START_C;
+            hours = START_H;
+            minutes = START_M;
+            seconds = START_S;
+            LATA=0b00000110;
+            LATB=0b11111101;
+        }
+            if(seconds > 59){
+                seconds=0;
+                displayenable=1;
+                quarters=0;
+                if(minutes>=15){quarters=4;}
+                if(minutes>=30){quarters=6;}
+                if(minutes>=45){quarters=7;}
+                minutes++;
+                if(++minutes > 59){
+                    minutes = 0;
+                    hours++;
+                    if(hours>99){
+                        centons++;
+                        hours=0;
+                    }
+                }
+            }
 
-//	}
+        leftbuffer= ~led[hours/10];
+        rightbuffer= ~led[hours%10];
+        pilebuffer= ~(((centons*2)&0b00011111)|(quarters*32));
+        if(displayenable){displayenable--;}
+        else{
+            LATA=0b00000110;
+            LATB=0b11111110;
+            LATA=0b00000000;
+        }
+        //	}
         TMR2IF=0;	// clear event flag
 
 }
@@ -175,11 +181,11 @@ void init(void){
 	 *  Timer2 module activated
 	 *  Postscale ratio set at 1:16
 	 */
-	T2CON	= 0b01111101;
+	T2CON	= 0b01111111;
 	/*
 	 *  Period register set to 0xF9
 	 */
-	PR2	= 127;  //TODO check is this precisely right?
+	PR2	= 7;  //TODO check is this precisely right?
 
         TRISB=0;
         TRISA=0b11111000;
