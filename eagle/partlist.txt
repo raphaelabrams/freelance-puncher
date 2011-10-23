@@ -1,0 +1,43 @@
+Partlist
+
+BAT1                    BATTCON_245MM      Keystone Electronics # 3008 RETAINER COIN CELL 24MM SMD     
+
+C1                      1206               22pf      
+C2                      1206               22pf      
+C3                      EIA7343     part# T495C337K004ATE700  tantalum 330uF 4V or equivalent
+C4                      EIA7343     part# T495C337K004ATE700  tantalum 330uF 4V or equivalent
+
+CLEAR                   TACTILE_SWITCH_SMD (something small and out of the way)
+
+D_BAT                   SMB                Shotky diode B140HB-13-F or similar (This one is overkill!) 
+D_RESET                 SMB                Shotky diode B140HB-13-F or similar
+
+IC1      PIC16LF1827    SO-18W  (make sure to get the smt package)             
+
+
+LED2                    CHIPLED_1206       led  (red is probably best)
+LED3                    CHIPLED_1206       led  (red is probably best)
+LED4                    CHIPLED_1206       led  (red is probably best)
+LED5                    CHIPLED_1206       led  (red is probably best)
+LED6                    CHIPLED_1206       led  (red is probably best)
+LED7                    CHIPLED_1206       led  (red is probably best)
+LED8                    CHIPLED_1206       led  (red is probably best)
+
+POWER                   REKN               switch  (watever you can find)
+
+Q1                      TC26V              crystal 32768 Hz
+
+RN1      CTS 742C083101JP 0603 x4 resistor array         resistors are 100 Ohm
+RN2      CTS 742C083101JP 0603 x4 resistor array         resistors are 100 Ohm
+
+R_PULLUP                1206              10K
+R_RESET                 1206              10K
+R_SENSE                 1206              10K
+
+U$1      7SEG_SMTSMT    7-SEG_SMT          Kingbright   # ACSA03-41SRWA-F01  
+U$2      7SEG_SMTSMT    7-SEG_SMT          Kingbright   # ACSA03-41SRWA-F01  
+
+
+
+
+2x   Kingbright   # ACSA03-41SRWA-F01  

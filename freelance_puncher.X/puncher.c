@@ -96,6 +96,7 @@ void interrupt isr(void){
         minutes++;
         seconds = 0;
         quarters = 0;
+        if(minutes%15 == 0){displayenable=5;} //show time every 15 minutes
         if(minutes >= 15){quarters = 4;}
         if(minutes >= 30){quarters = 6;}
         if(minutes >= 45){quarters = 7;}
