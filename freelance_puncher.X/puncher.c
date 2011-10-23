@@ -9,27 +9,15 @@
 #include <htc.h>
 //#include<pic16f1827.h>
 
-#define ON 1
-#define OFF 0
-#define AM 0
-#define PM 1
-
-// Set start time here
-#define START_C 0
-#define START_H 0
-#define START_Q 0
-#define START_M 0
-#define START_S 0
 
 void init(void);
-void display(char left, char right, char pile);
+
 
 //call the following twice (with different args each time) and the compiler automatically sets each config register
-__CONFIG(FOSC_LP & WDTE_OFF & PWRTE_ON & MCLRE_ON & CP_OFF & CPD_OFF & BOREN_ON & FCMEN_OFF);
+__CONFIG(FOSC_LP & WDTE_OFF & PWRTE_OFF & MCLRE_ON & CP_OFF & CPD_OFF & BOREN_ON & FCMEN_OFF);
 __CONFIG(PLLEN_OFF & WRT_OFF & STVREN_ON & BORV_LO & LVP_OFF );
 
-volatile near unsigned char tickCounter;
-volatile near unsigned char newSecond;
+#define _XTAL_FREQ 32768
 
 near unsigned char centons; //hee hee 100 hours!
 near unsigned char hours;
@@ -39,8 +27,9 @@ near unsigned char quarters;
 near unsigned char leftbuffer;
 near unsigned char rightbuffer;
 near unsigned char pilebuffer;
-near unsigned char displayenable=5;
+near unsigned char displayenable;
 
+//the array for converting a number into a corresponding pattern on the LED display
 const unsigned char led[] = {
     0b11111100,
     0b01100000,
@@ -54,141 +43,106 @@ const unsigned char led[] = {
     0b11111110,
     0b11110110
 };
-const unsigned char common[] ={1,2,4};
 
-
-void display(char left, char right, char pile){
-            LATB = ~led[left];
-            LATA = common[2];
-            LATA = 0;
-
-            LATB = ~led[right];
-            LATA = common[1];
-            LATA = 0;
-
-            LATB = pile;
-            LATA = common[0];
-            LATA = 0;
-}
 
 void main(void){
     init();
-    seconds=eeprom_read(0);
-    minutes=eeprom_read(1);
-    quarters=eeprom_read(2);
-    hours=eeprom_read(3);
-    centons=eeprom_read(4);
-
-    // Initialise the current time
-
-
-    // Measure time
-
-
     while(1){
 
         if(displayenable){
             LATB = leftbuffer;  //left
             LATA = 4;
-            LATA = 4;
+            __delay_ms(2);
             LATA = 0;
 
             LATB = rightbuffer;   //right
             LATA = 2;
-            LATA = 2;
+            __delay_ms(2);
             LATA = 0;
 
             LATB = pilebuffer;     //pile
             LATA = 1;
-            LATA = 1;
             LATA = 0;
-        }
-            //        display(seconds/10,seconds%10,~seconds);
-        if(RA4==0){
-            PIE1	= 0b00000000;
-
-            eeprom_write(0, seconds);
-            eeprom_write(1, minutes);
-            eeprom_write(2, quarters);
-            eeprom_write(3, hours);
-            eeprom_write(4, centons);
-            LATA=0b00000110;
-            LATB=0b11111101;
-            while(RA4==0){;}
         }
     }
 }
 
 void interrupt isr(void){
-		/***** Timer 2 Code *****/
-//	if((TMR2IE)&&(TMR2IF)){
-        seconds++;
-        if(RA3==0){
-            centons=START_C;
-            hours = START_H;
-            minutes = START_M;
-            seconds = START_S;
-            LATA=0b00000110;
-            LATB=0b11111101;
-        }
-            if(seconds > 59){
-                seconds=0;
-                displayenable=1;
-                quarters=0;
-                if(minutes>=15){quarters=4;}
-                if(minutes>=30){quarters=6;}
-                if(minutes>=45){quarters=7;}
-                minutes++;
-                if(++minutes > 59){
-                    minutes = 0;
-                    hours++;
-                    if(hours>99){
-                        centons++;
-                        hours=0;
-                    }
-                }
+/***** Timer 2 Code *****/
+
+    seconds++;
+    LATA = 0b00000000;
+    if(RA3 == 0){           //reset button has been pushed, set all the memory to 0
+        centons = 0;
+        hours = 0;
+        minutes = 0;
+        seconds = 0;
+        quarters = 0;
+        LATA = 0b00000110;
+        LATB = 0b11111101;
+    }
+    if(RA4 == 0){
+        PIE1= 0b00000000;  //stop interrupts so we stay here until power runs out
+        eeprom_write(0, seconds);  //save all the memory values to eeprom.
+        eeprom_write(1, minutes);
+        eeprom_write(2, quarters);
+        eeprom_write(3, hours);
+        eeprom_write(4, centons);
+        LATA= 0b00000110;          //indivate that the eeprom is written to by flashing a pattern on the display
+        LATB= 0b11111101;
+        while(RA4==0){;}  //wait for power to fully dissipate
+    }
+    if(seconds > 59){
+        minutes++;
+        seconds = 0;
+        quarters = 0;
+        if(minutes >= 15){quarters = 4;}
+        if(minutes >= 30){quarters = 6;}
+        if(minutes >= 45){quarters = 7;}
+        if(minutes > 59){
+            minutes = 0;
+            hours++;
+            if(hours > 99){
+                centons++;
+                hours = 0;
             }
-
-        leftbuffer= ~led[hours/10];
-        rightbuffer= ~led[hours%10];
-        pilebuffer= ~(((centons*2)&0b00011111)|(quarters*32));
-        if(displayenable){displayenable--;}
-        else{
-            LATA=0b00000110;
-            LATB=0b11111110;
-            LATA=0b00000000;
         }
-        //	}
-        TMR2IF=0;	// clear event flag
-
+    }
+    leftbuffer = ~led[hours/10];
+    rightbuffer = ~led[hours%10];
+    pilebuffer = ~(((centons*2)&0b00011111)|(quarters*32));
+    if(displayenable){
+        displayenable--;
+    }else{
+        LATA = 0b00000110;
+        LATB = 0b11111110;
+        LATA = 0b00000000;
+    }
+    TMR2IF = 0;	// clear event flag
 }
 
 void init(void){
-	/***** Common Code ****
-	 *  Timer 2 interrupt enabled.
-	 */
-	PIE1	= 0b00000010;
-        ANSELA=0;
-        ANSELB=0;
+    TRISB = 0;
+    TRISA = 0b11111000;
+    ANSELA = 0;
+    ANSELB = 0;
+    LATA = 0b00000000;
+    LATB = 0b11111111;
+    seconds = eeprom_read(0);
+    minutes = eeprom_read(1);
+    quarters = eeprom_read(2);
+    hours = eeprom_read(3);
+    centons = eeprom_read(4);
+    PIE1	= 0b00000010;
+//  Peripheral interrupts enabled
+    INTCON = 0b11000000;
+//  Timer 2 Code
+//  Prescale ratio set at 1:64
+//  Timer2 module activated
+//  Postscale ratio set at 1:16
+ //   T2CON = 0b01111111;
+    T2CON = 0b01111111;
 
-        /*
-	 *  Peripheral interrupts enabled
-	 *  Global interrupt disabled during initialization
-	 */
-	INTCON	= 0b11000000;
-	/***** Timer 2 Code ****
-	 *  Prescale ratio set at 1:64
-	 *  Timer2 module activated
-	 *  Postscale ratio set at 1:16
-	 */
-	T2CON	= 0b01111111;
-	/*
-	 *  Period register set to 0xF9
-	 */
-	PR2	= 7;  //TODO check is this precisely right?
-
-        TRISB=0;
-        TRISA=0b11111000;
-        LATA=0b00000110;
-        LATB=0b11111101;
+    PR2 = 7;  //period register
+    displayenable = 7;  //set display to show current timo on startup for 7 seconds
 }

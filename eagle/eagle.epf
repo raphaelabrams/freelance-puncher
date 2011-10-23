@@ -330,7 +330,7 @@ UsedLibrary="/home/raphael/eeprojects/EAGLE_PROJECTS/RaphaelBigLibrary.lbr"
 
 [Win_1]
 Type="Control Panel"
-Loc="239 330 838 729"
+Loc="304 228 903 627"
 State=2
 Number=0
 
