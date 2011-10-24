@@ -102,6 +102,7 @@ void interrupt isr(void){
         if(minutes >= 45){quarters = 7;}
         if(minutes > 59){
             minutes = 0;
+            quarters = 0;
             hours++;
             if(hours > 99){
                 centons++;
