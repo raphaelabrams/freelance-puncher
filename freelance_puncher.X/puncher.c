@@ -116,9 +116,36 @@ void interrupt isr(void){
     if(displayenable){
         displayenable--;
     }else{
-        LATA = 0b00000110;
-        LATB = 0b11111110;
+        LATB = 0b11111111;
+        LATA = 0b00000001;
+
+        LATB = 0b11111101;
+        LATB = 0b11111111;
+            __delay_ms(31);
+
+        LATB = 0b11111011;
+        LATB = 0b11111111;
+            __delay_ms(26);
+
+        LATB = 0b11110111;
+        LATB = 0b11111111;
+            __delay_ms(22);
+
+        LATB = 0b11101111;
+        LATB = 0b11111111;
+            __delay_ms(19);
+
+        LATB = 0b11011111;
+        LATB = 0b11111111;
+            __delay_ms(17);
+
+        LATB = 0b10111111;
+        LATB = 0b11111111;
+            __delay_ms(16);
+
+        LATB = 0b01111111;
         LATA = 0b00000000;
+        LATB = 0b11111111;
     }
     TMR2IF = 0;	// clear event flag
 }
