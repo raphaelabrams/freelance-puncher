@@ -9,6 +9,8 @@ When powered down, time counting stops completely. Thanks to the large capacitor
 
 Your total time logged is only displayed on power up, and periodically every 15 minutes, each for about 7 seconds. If you want to see your time on demand, just power down then back up. During normal run time the decimal points on the numerals will blink dimly every second. 
 
+You can order boards from Sparkfun here: http://www.batchpcb.com/product_info.php?products_id=73628&check=4932970ca69c59213fd819d27158301f
+
 
 Notes:
 Beerware is a little low rent for me. This is Scotchware. (Software is free, but if you happen to see me some time, buy me a neat 12 year.)
